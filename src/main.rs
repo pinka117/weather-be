@@ -1,17 +1,10 @@
 use std::error::Error;
 
-use async_graphql::{http::GraphiQLSource, EmptyMutation, EmptySubscription, Object, Schema};
+use async_graphql::{http::GraphiQLSource, EmptyMutation, EmptySubscription, Schema};
 use async_graphql_poem::*;
 use poem::{listener::TcpListener, web::Html, *};
-
-struct Query;
-
-#[Object]
-impl Query {
-    async fn howdy(&self) -> &'static str {
-        "partner"
-    }
-}
+pub mod graphql;
+pub use graphql::*;
 
 #[handler]
 async fn graphiql() -> impl IntoResponse {
