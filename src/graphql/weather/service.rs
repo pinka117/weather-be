@@ -28,7 +28,7 @@ pub async fn location_weather(coordinate: Coordinate) -> Result<String, Box<dyn 
         Err(_error) => return Err("Api failed")?,
     };
 
-    let mut weather: CurrentWeather = match response.json().await {
+    let weather: CurrentWeather = match response.json().await {
         Ok(response) => response,
         Err(_error) => return Err("Api failed to parse json")?,
     };
@@ -36,6 +36,6 @@ pub async fn location_weather(coordinate: Coordinate) -> Result<String, Box<dyn 
     if weather.weather.get(0).is_none() {
         return Err("Invalid weather")?;
     } else {
-        Ok(weather.weather.swap_remove(0).main)
+        Ok(weather.weather[0].main.clone())
     }
 }
