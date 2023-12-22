@@ -1,3 +1,5 @@
+use std::env;
+
 use crate::graphql::Coordinate;
 use serde::Deserialize;
 
@@ -12,11 +14,15 @@ struct Weather {
 }
 
 pub async fn location_weather(coordinate: Coordinate) -> Result<Option<String>, reqwest::Error> {
+    let api_key = match env::var_os("API_KEY") {
+        Some(v) => v.into_string().unwrap(),
+        None => panic!("$API_KEY is not set")
+    };
     let request_url = format!(
         "https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={key}",
         lat = coordinate.latitude,
         lon = coordinate.longitude,
-        key = ""
+        key = api_key
     );
     println!("{}", request_url);
 
